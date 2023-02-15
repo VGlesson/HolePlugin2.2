@@ -1,16 +1,10 @@
-﻿using Autodesk.Revit.Attributes;
-using Autodesk.Revit.DB;
-using Autodesk.Revit.DB.Mechanical;
-using Autodesk.Revit.DB.Plumbing;
-using Autodesk.Revit.DB.Structure;
-using Autodesk.Revit.UI;
-using System.Collections.Generic;
-using System.Linq;
+﻿using NewRelic.Api.Agent;
+using System.Diagnostics;
 
 namespace HolePlugin
 {
-    [Transaction(TransactionMode.Manual)]
-    public class AddHole : IExternalCommand
+    [DebuggerDisplay("{GetDebuggerDisplay(),nq}"), Transaction]
+    public class AddHoleBase
     {
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
@@ -33,7 +27,7 @@ namespace HolePlugin
                 TaskDialog.Show("Ошибка", "Не найдено семейство \"Отверстие\"");
                 return Result.Cancelled;
             }
-            //Создание воздуходоводов
+            //Создание воздуховодов
             List<Duct> ducts = new FilteredElementCollector(ovDoc)
                 .OfClass(typeof(Duct))
                 .OfType<Duct>()
@@ -120,32 +114,10 @@ namespace HolePlugin
             transaction.Commit();
             return Result.Succeeded;
         }
-        public class ReferenceWithContextElementEqualityComprarer : IEqualityComparer<ReferenceWithContext>
+
+        private string GetDebuggerDisplay()
         {
-            public bool Equals(ReferenceWithContext x, ReferenceWithContext y)
-            {
-                if (ReferenceEquals(x, y)) return true;
-                if (ReferenceEquals(null, x)) return false;
-                if (ReferenceEquals(null, y)) return false;
-
-                var xReference = x.GetReference();
-
-                var yReference = y.GetReference();
-
-                return xReference.LinkedElementId == yReference.LinkedElementId
-                    && xReference.ElementId == yReference.ElementId;
-
-            }
-
-            public int GetHashCode(ReferenceWithContext obj)
-            {
-                var reference = obj.GetReference();
-
-                unchecked
-                {
-                    return (reference.LinkedElementId.GetHashCode() * 397) ^ reference.ElementId.GetHashCode();
-                }
-            }
+            return ToString();
         }
     }
 }

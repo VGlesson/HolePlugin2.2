@@ -56,6 +56,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddHole.cs" />
+    <Compile Include="AddHoleBase.cs" />
+    <Compile Include="AddHoleBase1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
