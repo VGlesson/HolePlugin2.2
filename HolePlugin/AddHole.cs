@@ -39,7 +39,7 @@ namespace HolePlugin
                 .OfType<Duct>()
                 .ToList();
 
-            //Создание труб
+            //Создание труб  
             List<Pipe> pipes = new FilteredElementCollector(ovDoc)
                 .OfClass(typeof(Pipe))
                 .OfType<Pipe>()
