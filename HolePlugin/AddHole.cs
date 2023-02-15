@@ -26,11 +26,11 @@ namespace HolePlugin
                 .OfClass(typeof(FamilySymbol))
                 .OfCategory(BuiltInCategory.OST_GenericModel)
                 .OfType<FamilySymbol>()
-                .Where(x => x.FamilyName.Equals("Отверстие"))
+                .Where(x => x.FamilyName.Equals("Отверстия"))
                 .FirstOrDefault();
             if (familySymbol == null)
             {
-                TaskDialog.Show("Ошибка", "Не найдено семейство \"Отверстие\"");
+                TaskDialog.Show("Ошибка", "Не найдено семейство \"Отверстия\"");
                 return Result.Cancelled;
             }
             //Создание воздуходоводов
